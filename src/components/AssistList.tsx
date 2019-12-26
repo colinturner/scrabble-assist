@@ -10,11 +10,12 @@ const AssistList = () => {
         placeholder="which letters do you have?"
         onChange={e => setLetters(e.target.value)}
       />
-      {scrabbleAssist({ letters: letters.split(""), words: ENGLISH_WORDS }).map(
-        word => (
-          <ul>{word}</ul>
-        )
-      )}
+      <div style={{ whiteSpace: "pre-line", lineHeight: "30px" }}>
+        {scrabbleAssist({
+          letters: letters.split(""),
+          words: ENGLISH_WORDS
+        }).join("\r\n")}
+      </div>
     </>
   );
 };

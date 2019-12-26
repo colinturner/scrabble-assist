@@ -4,16 +4,22 @@ import ENGLISH_WORDS from "../constants/englishWords";
 
 const AssistList = () => {
   const [letters, setLetters] = useState("");
+  const [anagram, setAnagram] = useState(false);
   return (
     <>
-      <input
-        placeholder="which letters do you have?"
-        onChange={e => setLetters(e.target.value)}
-      />
+      <div>
+        <input
+          placeholder="Which letters do you have?"
+          onChange={e => setLetters(e.target.value)}
+        />
+        <label>Anagram</label>
+        <input type="checkbox" onChange={() => setAnagram(!anagram)} />
+      </div>
       <div style={{ whiteSpace: "pre-line", lineHeight: "30px" }}>
         {scrabbleAssist({
           letters: letters.split(""),
-          words: ENGLISH_WORDS
+          words: ENGLISH_WORDS,
+          anagram
         }).join("\r\n")}
       </div>
     </>

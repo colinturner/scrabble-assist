@@ -8,6 +8,8 @@ const words = [
   "bear",
   "cork",
   "llama",
+  "tan",
+  "tangent",
   "you",
   "youth",
   "yurt",
@@ -65,6 +67,15 @@ describe("scrabbleAssist", () => {
     const letters = [];
     const expectedResult = [];
     expect(scrabbleAssist({ letters, words }).sort()).toEqual(
+      expectedResult.sort()
+    );
+  });
+
+  it("should return only words whose length is equal to the number of input letters when 'anagram' is set to true", () => {
+    const letters = ["n", "a", "t"];
+    const expectedResult = ["ant", "tan"];
+    const anagram = true;
+    expect(scrabbleAssist({ letters, words, anagram }).sort()).toEqual(
       expectedResult.sort()
     );
   });

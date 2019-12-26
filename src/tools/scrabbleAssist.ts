@@ -1,6 +1,7 @@
 interface Props {
   letters: string[];
   words: string[];
+  anagram: boolean;
 }
 
 interface LettersAlreadyReviewed {
@@ -8,7 +9,7 @@ interface LettersAlreadyReviewed {
 }
 
 const scrabbleAssist = (props: Props) => {
-  const { letters, words } = props;
+  const { letters, words, anagram } = props;
   /**
    * 1. Check for letters provided
    */
@@ -19,6 +20,14 @@ const scrabbleAssist = (props: Props) => {
    * 2. Filter for words that have at least the provided letters
    */
   return words.filter(word => {
+    /**
+     * A. Check for Anagram option
+     */
+    if (anagram) {
+      if (word.length !== letters.length) {
+        return false;
+      }
+    }
     const lettersAlreadyReviewed: LettersAlreadyReviewed = {};
     return letters.every(letter => {
       if (lettersAlreadyReviewed[letter]) {

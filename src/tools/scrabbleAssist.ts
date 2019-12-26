@@ -1,8 +1,23 @@
+interface Props {
+  letters: string[];
+  words: string[];
+}
+
 interface LettersAlreadyReviewed {
   [key: string]: boolean;
 }
 
-const scrabbleAssist = (letters: string[], words: string[]) => {
+const scrabbleAssist = (props: Props) => {
+  const { letters, words } = props;
+  /**
+   * 1. Check for letters provided
+   */
+  if (!letters.length) {
+    return [];
+  }
+  /**
+   * 2. Filter for words that have at least the provided letters
+   */
   return words.filter(word => {
     const lettersAlreadyReviewed: LettersAlreadyReviewed = {};
     return letters.every(letter => {
@@ -16,7 +31,7 @@ const scrabbleAssist = (letters: string[], words: string[]) => {
       const numberOfOccurrencesOfLetterInLetters = letters.filter(
         (letter: string) => letter === letterUnderReview
       ).length;
-      const letterRegExp = new RegExp(letter, "g");
+      const letterRegExp = new RegExp(letter, "gi");
       const numberOfOccurrencesOfLetterInWord = (word.match(letterRegExp) || [])
         .length;
       return (

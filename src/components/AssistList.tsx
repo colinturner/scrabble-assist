@@ -1,25 +1,32 @@
 import React, { useState } from "react";
 import scrabbleAssist from "../tools/scrabbleAssist";
 import ENGLISH_WORDS from "../constants/englishWords";
+import styled from "styled-components";
+
+const Inputs = styled.div`
+  display: flex;
+  background: red;
+`;
 
 const AssistList = () => {
   const [letters, setLetters] = useState("");
-  const [anagram, setAnagram] = useState(false);
+  const [lettersLonger, setLettersLonger] = useState(NaN);
   return (
     <>
-      <div>
+      <Inputs>
+        <label>Letters in your hand:</label>
+        <input placeholder="xyz" onChange={e => setLetters(e.target.value)} />
+        <label>Words with this many extra letters:</label>
         <input
-          placeholder="Which letters do you have?"
-          onChange={e => setLetters(e.target.value)}
+          type="number"
+          onChange={e => setLettersLonger(parseInt(e.target.value))}
         />
-        <label>Anagram</label>
-        <input type="checkbox" onChange={() => setAnagram(!anagram)} />
-      </div>
+      </Inputs>
       <div style={{ whiteSpace: "pre-line", lineHeight: "30px" }}>
         {scrabbleAssist({
           letters: letters.split(""),
           words: ENGLISH_WORDS,
-          anagram
+          lettersLonger
         }).join("\r\n")}
       </div>
     </>

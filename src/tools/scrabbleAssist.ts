@@ -1,7 +1,7 @@
 interface Props {
   letters: string[];
   words: string[];
-  anagram: boolean;
+  lettersLonger: number;
 }
 
 interface LettersAlreadyReviewed {
@@ -9,7 +9,7 @@ interface LettersAlreadyReviewed {
 }
 
 const scrabbleAssist = (props: Props) => {
-  const { letters, words, anagram } = props;
+  const { letters, words, lettersLonger } = props;
   /**
    * 1. Check for letters provided
    */
@@ -21,10 +21,13 @@ const scrabbleAssist = (props: Props) => {
    */
   return words.filter(word => {
     /**
-     * A. Check for Anagram option
+     * A. Check for lettersLonger option
      */
-    if (anagram) {
-      if (word.length !== letters.length || word === letters.join("")) {
+    if (lettersLonger || lettersLonger === 0) {
+      if (
+        word.length !== letters.length + lettersLonger ||
+        word === letters.join("")
+      ) {
         return false;
       }
     }

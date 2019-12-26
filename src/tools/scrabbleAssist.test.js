@@ -71,20 +71,20 @@ describe("scrabbleAssist", () => {
     );
   });
 
-  it("should return only words whose length is equal to the number of input letters when 'anagram' is set to true", () => {
+  it("should return only words whose length is equal to the number of input letters, plus the lettersLonger option, when 'lettersLonger' is set", () => {
     const letters = ["n", "a", "t"];
-    const expectedResult = ["ant", "tan"];
-    const anagram = true;
-    expect(scrabbleAssist({ letters, words, anagram }).sort()).toEqual(
+    const lettersLonger = 4;
+    const expectedResult = ["tangent"];
+    expect(scrabbleAssist({ letters, words, lettersLonger }).sort()).toEqual(
       expectedResult.sort()
     );
   });
 
-  it("should not return the word that the input letters spell if 'anagram' option is checked", () => {
-    const letters = ["a", "n", "t"];
-    const expectedResult = ["tan"];
-    const anagram = true;
-    expect(scrabbleAssist({ letters, words, anagram }).sort()).toEqual(
+  it("should return only words whose length is equal to the number of input letters, plus the lettersLonger option, when 'lettersLonger' is set", () => {
+    const letters = ["n", "a", "t"];
+    const lettersLonger = 0;
+    const expectedResult = ["ant", "tan"];
+    expect(scrabbleAssist({ letters, words, lettersLonger }).sort()).toEqual(
       expectedResult.sort()
     );
   });

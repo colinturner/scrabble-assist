@@ -1,16 +1,3 @@
-// const ENGLISH_WORDS = [
-//   "ant",
-//   "bee",
-//   "been",
-//   "bear",
-//   "cork",
-//   "llama",
-//   "you",
-//   "youth",
-//   "yurt",
-//   "zebra"
-// ];
-
 const ENGLISH_WORDS =
 [
   "aardvark",

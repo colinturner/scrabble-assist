@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import scrabbleAssist from "../tools/scrabbleAssist";
 import ENGLISH_WORDS from "../constants/englishWords";
+import GERMAN_WORDS from "../constants/germanWords";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -45,10 +46,28 @@ const List = styled.div`
 const AssistList = () => {
   const [letters, setLetters] = useState("");
   const [lettersLonger, setLettersLonger] = useState(NaN);
+  const [words, setWords] = useState(ENGLISH_WORDS);
+
+  const setLanguage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (["german", "deutsch"].includes(e.target.value.toLowerCase())) {
+      setWords(GERMAN_WORDS);
+      return;
+    }
+    setWords(ENGLISH_WORDS);
+  };
+
   return (
     <Container>
       <Title>Scrabble Assist</Title>
       <Header>
+        <InputGroup>
+          <Label>Language:</Label>
+          <Input
+            type="text"
+            placeholder="English or German"
+            onChange={e => setLanguage(e)}
+          />
+        </InputGroup>
         <InputGroup>
           <Label>Letters in your hand:</Label>
           <Input placeholder="xyz" onChange={e => setLetters(e.target.value)} />
@@ -64,7 +83,7 @@ const AssistList = () => {
       <List>
         {scrabbleAssist({
           letters: letters.split(""),
-          words: ENGLISH_WORDS,
+          words,
           lettersLonger
         }).join("\r\n")}
       </List>

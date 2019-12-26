@@ -79,4 +79,13 @@ describe("scrabbleAssist", () => {
       expectedResult.sort()
     );
   });
+
+  it("should not return the word that the input letters spell if 'anagram' option is checked", () => {
+    const letters = ["a", "n", "t"];
+    const expectedResult = ["tan"];
+    const anagram = true;
+    expect(scrabbleAssist({ letters, words, anagram }).sort()).toEqual(
+      expectedResult.sort()
+    );
+  });
 });

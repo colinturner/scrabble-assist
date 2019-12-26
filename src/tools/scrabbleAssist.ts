@@ -24,7 +24,7 @@ const scrabbleAssist = (props: Props) => {
      * A. Check for Anagram option
      */
     if (anagram) {
-      if (word.length !== letters.length) {
+      if (word.length !== letters.length || word === letters.join("")) {
         return false;
       }
     }

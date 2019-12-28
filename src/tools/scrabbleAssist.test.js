@@ -1,4 +1,3 @@
-// const scrabbleAssist = require("./scrabbleAssist");
 import scrabbleAssist from "./scrabbleAssist";
 
 const words = [

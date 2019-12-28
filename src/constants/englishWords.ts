@@ -58114,6 +58114,9 @@ const ENGLISH_WORDS =
 
 export default ENGLISH_WORDS;
 
+// const longestWord = ENGLISH_WORDS.sort((a, b) => a.length - b.length).pop();
+// console.log('longest word: ', longestWord, 'length: ', (longestWord || []).length);
+
 // let sum = 0;
 // const wordsWith = letter => {
 //   const numberOfWordsContainingLetter = ENGLISH_WORDS.filter(word => word.includes(letter)).length;

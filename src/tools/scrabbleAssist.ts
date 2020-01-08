@@ -1,57 +1,62 @@
 interface Props {
-  letters: string[];
+  lettersInTargetWord: string;
   words: string[];
-  lettersLonger: number;
 }
 
 interface LettersAlreadyReviewed {
   [key: string]: boolean;
 }
 
-const scrabbleAssist = (props: Props) => {
-  const { letters, words, lettersLonger } = props;
+type LetterPositions = {
+  [key in number | string]: string;
+};
+
+export default function scrabbleAssist(props: Props) {
+  let { words, lettersInTargetWord } = props;
   /**
-   * 1. Check for letters provided
+   * 1. Return nothing if no input given for letters in target word
    */
-  if (!letters.length) {
+  if (!lettersInTargetWord) {
     return [];
   }
   /**
-   * 2. Filter for words that have at least the provided letters
+   * 2. Break down letter groups in target word
    */
   return words.filter(word => {
-    /**
-     * A. Check for lettersLonger option
-     */
-    if (lettersLonger || lettersLonger === 0) {
-      if (
-        word.length !== letters.length + lettersLonger ||
-        word === letters.join("")
-      ) {
-        return false;
-      }
-    }
-    const lettersAlreadyReviewed: LettersAlreadyReviewed = {};
-    return letters.every(letter => {
-      if (lettersAlreadyReviewed[letter]) {
-        return true;
-      } else {
-        lettersAlreadyReviewed[letter] = true;
-      }
-
-      const letterUnderReview = letter;
-      const numberOfOccurrencesOfLetterInLetters = letters.filter(
-        (letter: string) => letter === letterUnderReview
-      ).length;
-      const letterRegExp = new RegExp(letter, "gi");
-      const numberOfOccurrencesOfLetterInWord = (word.match(letterRegExp) || [])
-        .length;
-      return (
-        numberOfOccurrencesOfLetterInWord >=
-        numberOfOccurrencesOfLetterInLetters
-      );
-    });
+    let pattern = generateRegExp(lettersInTargetWord);
+    return pattern.test(word);
   });
-};
+  /**
+   * 3. Filter for words that have at least the provided letters
+   */
+}
 
-export default scrabbleAssist;
+export function generateRegExp(lettersInTargetWord: string): RegExp {
+  let pattern = lettersInTargetWord;
+  if (hasAmpersand(pattern) && beginsWithALetter(pattern)) {
+    pattern = "^" + pattern;
+  }
+
+  if (hasAmpersand(pattern) && endsWithALetter(pattern)) {
+    pattern = pattern + "$";
+  }
+
+  pattern = pattern.replace(/&/g, ".*");
+  return new RegExp(pattern, "g");
+}
+
+function hasAmpersand(pattern: string): boolean {
+  return pattern.includes("&");
+}
+
+function hasAsterix(pattern: string): boolean {
+  return pattern.includes("*");
+}
+
+function beginsWithALetter(pattern: string): boolean {
+  return !["*", "&"].includes(pattern.charAt(0));
+}
+
+function endsWithALetter(pattern: string): boolean {
+  return !["*", "&"].includes(pattern.charAt(pattern.length - 1));
+}

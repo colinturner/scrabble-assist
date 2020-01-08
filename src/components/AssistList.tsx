@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import scrabbleAssist from "../tools/scrabbleAssist";
 import ENGLISH_WORDS from "../constants/englishWords";
 import GERMAN_WORDS from "../constants/germanWords";
@@ -44,8 +44,7 @@ const List = styled.div`
 `;
 
 const AssistList = () => {
-  const [letters, setLetters] = useState("");
-  const [lettersLonger, setLettersLonger] = useState(NaN);
+  const [lettersInTargetWord, setLettersInTargetWord] = useState("");
   const [words, setWords] = useState(ENGLISH_WORDS);
 
   const setLanguage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +52,9 @@ const AssistList = () => {
       setWords(GERMAN_WORDS);
       return;
     }
-    setWords(ENGLISH_WORDS);
+    if (words !== ENGLISH_WORDS) {
+      setWords(ENGLISH_WORDS);
+    }
   };
 
   return (
@@ -70,21 +71,16 @@ const AssistList = () => {
         </InputGroup>
         <InputGroup>
           <Label>Letters in your hand:</Label>
-          <Input placeholder="xyz" onChange={e => setLetters(e.target.value)} />
-        </InputGroup>
-        <InputGroup>
-          <Label>Find words with this many extra letters:</Label>
           <Input
-            type="number"
-            onChange={e => setLettersLonger(parseInt(e.target.value))}
+            placeholder="xyz"
+            onChange={e => setLettersInTargetWord(e.target.value)}
           />
         </InputGroup>
       </Header>
       <List>
         {scrabbleAssist({
-          letters: letters.split(""),
-          words,
-          lettersLonger
+          lettersInTargetWord,
+          words
         }).join("\r\n")}
       </List>
     </Container>

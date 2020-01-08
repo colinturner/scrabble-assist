@@ -10,6 +10,7 @@ const words = [
   "bear",
   "beneficial",
   "cork",
+  "corkage",
   "corn",
   "ear",
   "grey",
@@ -98,17 +99,17 @@ describe("scrabbleAssist", () => {
     );
   });
 
-  it("should take a letters-ampersand-letter input, and return all words where ampersand represents any letter(s)", () => {
-    const lettersInTargetWord = "la&a";
-    const expectedResult = ["laura", "lamda"];
+  it("should take a letter-ampersand-letter input, and return all words where ampersand represents any letter(s)", () => {
+    const lettersInTargetWord = "l&a";
+    const expectedResult = ["laura", "lambda", "llama"];
     expect(scrabbleAssist({ lettersInTargetWord, words }).sort()).toEqual(
       expectedResult.sort()
     );
   });
 
   it("should take a letters-ampersand-letter input, and return all words where ampersand represents any letter(s)", () => {
-    const lettersInTargetWord = "l&a";
-    const expectedResult = ["laura", "lamda", "llama"];
+    const lettersInTargetWord = "la&a";
+    const expectedResult = ["laura", "lambda"];
     expect(scrabbleAssist({ lettersInTargetWord, words }).sort()).toEqual(
       expectedResult.sort()
     );
@@ -217,6 +218,24 @@ describe("generateRegExp", () => {
   it("should take a string with format letter-ampersand-letter-ampersand, and return a new RegExp in correct format", () => {
     const lettersInTargetWord = "b&f&";
     const expectedResult = new RegExp("^b.*f.*", "g");
+    expect(generateRegExp(lettersInTargetWord)).toEqual(expectedResult);
+  });
+
+  it("should take a string with format letter-asterix(es), and return a new RegExp in correct format", () => {
+    const lettersInTargetWord = "b***";
+    const expectedResult = new RegExp("^b...$", "g");
+    expect(generateRegExp(lettersInTargetWord)).toEqual(expectedResult);
+  });
+
+  it("should take a string with format letter-asterixes-letter, and return a new RegExp in correct format", () => {
+    const lettersInTargetWord = "c**k";
+    const expectedResult = new RegExp("^c..k$", "g");
+    expect(generateRegExp(lettersInTargetWord)).toEqual(expectedResult);
+  });
+
+  it("should take a string with format letter-asterix-letter, and return a new RegExp in correct format", () => {
+    const lettersInTargetWord = "*a*";
+    const expectedResult = new RegExp("^.a.$", "g");
     expect(generateRegExp(lettersInTargetWord)).toEqual(expectedResult);
   });
 });

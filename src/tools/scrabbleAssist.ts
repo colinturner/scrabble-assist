@@ -23,7 +23,7 @@ export default function scrabbleAssist(props: Props) {
    * 2. Break down letter groups in target word
    */
   return words.filter(word => {
-    let pattern = generateRegExp(lettersInTargetWord);
+    let pattern = generateRegExp(lettersInTargetWord.toLowerCase());
     return pattern.test(word);
   });
   /**
@@ -41,6 +41,23 @@ export function generateRegExp(lettersInTargetWord: string): RegExp {
     pattern = pattern + "$";
   }
 
+  if (hasAsterix(pattern) && beginsWithALetter(pattern)) {
+    pattern = "^" + pattern;
+  }
+
+  if (hasAsterix(pattern) && endsWithALetter(pattern)) {
+    pattern = pattern + "$";
+  }
+
+  if (beginsWithAsterix(pattern)) {
+    pattern = "^" + pattern;
+  }
+
+  if (endsWithAsterix(pattern)) {
+    pattern = pattern + "$";
+  }
+
+  pattern = pattern.replace(/\*/g, ".");
   pattern = pattern.replace(/&/g, ".*");
   return new RegExp(pattern, "g");
 }
@@ -59,4 +76,12 @@ function beginsWithALetter(pattern: string): boolean {
 
 function endsWithALetter(pattern: string): boolean {
   return !["*", "&"].includes(pattern.charAt(pattern.length - 1));
+}
+
+function beginsWithAsterix(pattern: string): boolean {
+  return pattern.charAt(0) === "*";
+}
+
+function endsWithAsterix(pattern: string): boolean {
+  return pattern.charAt(pattern.length - 1) === "*";
 }

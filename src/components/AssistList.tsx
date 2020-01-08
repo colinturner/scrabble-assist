@@ -70,7 +70,7 @@ const AssistList = () => {
           />
         </InputGroup>
         <InputGroup>
-          <Label>Letters in your hand:</Label>
+          <Label>Desired word:</Label>
           <Input
             placeholder="xyz"
             onChange={e => setLettersInTargetWord(e.target.value)}

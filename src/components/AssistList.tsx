@@ -44,6 +44,7 @@ const List = styled.div`
 `;
 
 const AssistList = () => {
+  const [lettersInHand, setLettersInHand] = useState("");
   const [lettersInTargetWord, setLettersInTargetWord] = useState("");
   const [words, setWords] = useState(ENGLISH_WORDS);
 
@@ -70,15 +71,23 @@ const AssistList = () => {
           />
         </InputGroup>
         <InputGroup>
-          <Label>Desired word:</Label>
+          <Label>Letters in hand (optional):</Label>
           <Input
             placeholder="xyz"
+            onChange={e => setLettersInHand(e.target.value)}
+          />
+        </InputGroup>
+        <InputGroup>
+          <Label>Desired word format:</Label>
+          <Input
+            placeholder="sc**h&"
             onChange={e => setLettersInTargetWord(e.target.value)}
           />
         </InputGroup>
       </Header>
       <List>
         {scrabbleAssist({
+          lettersInHand,
           lettersInTargetWord,
           words
         }).join("\r\n")}

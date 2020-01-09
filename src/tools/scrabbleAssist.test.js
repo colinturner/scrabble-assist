@@ -1,4 +1,7 @@
-import scrabbleAssist, { generateRegExp } from "./scrabbleAssist";
+import scrabbleAssist, {
+  generateRegExp,
+  filterByLettersInHand
+} from "./scrabbleAssist";
 
 const words = [
   "adjacent",
@@ -14,6 +17,12 @@ const words = [
   "corn",
   "ear",
   "grey",
+  "ha",
+  "he",
+  "heiko",
+  "hi",
+  "hum",
+  "humming",
   "lambda",
   "laura",
   "lean",
@@ -27,6 +36,7 @@ const words = [
 ];
 
 describe("scrabbleAssist", () => {
+  // No input
   it("should take an empty string as input and return no words", () => {
     const lettersInTargetWord = "";
     const expectedResult = [];
@@ -35,6 +45,7 @@ describe("scrabbleAssist", () => {
     );
   });
 
+  // Just letters
   it("should take a letter as input and return all words with that letter", () => {
     const lettersInTargetWord = "y";
     const expectedResult = ["grey", "you", "youth", "yurt"];
@@ -43,6 +54,7 @@ describe("scrabbleAssist", () => {
     );
   });
 
+  // Letters and ampersands
   it("should take a letter followed by an ampersand, and return all words starting with that letter", () => {
     const lettersInTargetWord = "y&";
     const expectedResult = ["you", "youth", "yurt"];
@@ -115,6 +127,7 @@ describe("scrabbleAssist", () => {
     );
   });
 
+  // Letters and asterisks
   it("should take a letter-star(s) input, and return all words where star(s) represent extra letter(s)", () => {
     const lettersInTargetWord = "b***";
     const expectedResult = ["bean", "bear", "been"];
@@ -147,52 +160,32 @@ describe("scrabbleAssist", () => {
     );
   });
 
-  xit("should take several letters as input and return all words with those letters in the right amounts", () => {
-    const lettersInTargetWord = { unordered: "ebe" };
-    const expectedResult = ["bee", "been", "beneficial"];
-    expect(scrabbleAssist({ lettersInTargetWord, words }).sort()).toEqual(
-      expectedResult.sort()
-    );
+  //Letters in hand
+  it("should take a single lettersInHand, and return the correct words", () => {
+    const lettersInHand = "i";
+    const lettersInTargetWord = "h*";
+    const expectedResult = ["hi"];
+    expect(
+      scrabbleAssist({ lettersInHand, lettersInTargetWord, words }).sort()
+    ).toEqual(expectedResult.sort());
   });
 
-  xit("should take several letters as input and return all words with those letters in the right amounts", () => {
-    const lettersInTargetWord = { unordered: "ebe" };
-    const expectedResult = ["bee", "been", "beneficial"];
-    expect(scrabbleAssist({ lettersInTargetWord, words }).sort()).toEqual(
-      expectedResult.sort()
-    );
+  it("should take multiple lettersInHand, and return the correct words", () => {
+    const lettersInHand = "nbr";
+    const lettersInTargetWord = "*ea*";
+    const expectedResult = ["bean", "bear"];
+    expect(
+      scrabbleAssist({ lettersInHand, lettersInTargetWord, words }).sort()
+    ).toEqual(expectedResult.sort());
   });
 
-  xit("should take several letters as input and return all words with those letters in the right amounts", () => {
-    const lettersInTargetWord = { 4: "e", unordered: "be" };
-    const expectedResult = ["beneficial"];
-    expect(scrabbleAssist({ lettersInTargetWord, words }).sort()).toEqual(
-      expectedResult.sort()
-    );
-  });
-
-  xit("should return no words when none possible", () => {
-    const lettersInTargetWord = { unordered: "xyzaaaal" };
-    const expectedResult = [];
-    expect(scrabbleAssist({ lettersInTargetWord, words }).sort()).toEqual(
-      expectedResult.sort()
-    );
-  });
-
-  xit("should return no words when no letters provided", () => {
-    const lettersInTargetWord = {};
-    const expectedResult = [];
-    expect(scrabbleAssist({ lettersInTargetWord, words }).sort()).toEqual(
-      expectedResult.sort()
-    );
-  });
-
-  xit("should uppercase letters that are not included in the scrabble hand", () => {
-    const lettersInTargetWord = { unordered: "nat" };
-    const expectedResult = ["ant", "tan", "tanGENT"];
-    expect(scrabbleAssist({ lettersInTargetWord, words }).sort()).toEqual(
-      expectedResult.sort()
-    );
+  it("should take multiple lettersInHand, and return the correct words", () => {
+    const lettersInHand = "aen";
+    const lettersInTargetWord = "be&";
+    const expectedResult = ["bee", "bean", "been"];
+    expect(
+      scrabbleAssist({ lettersInHand, lettersInTargetWord, words }).sort()
+    ).toEqual(expectedResult.sort());
   });
 });
 
@@ -221,21 +214,102 @@ describe("generateRegExp", () => {
     expect(generateRegExp(lettersInTargetWord)).toEqual(expectedResult);
   });
 
-  it("should take a string with format letter-asterix(es), and return a new RegExp in correct format", () => {
+  it("should take a string with format letter-asterisk(s), and return a new RegExp in correct format", () => {
     const lettersInTargetWord = "b***";
     const expectedResult = new RegExp("^b...$", "g");
     expect(generateRegExp(lettersInTargetWord)).toEqual(expectedResult);
   });
 
-  it("should take a string with format letter-asterixes-letter, and return a new RegExp in correct format", () => {
+  it("should take a string with format letter-asterisks-letter, and return a new RegExp in correct format", () => {
     const lettersInTargetWord = "c**k";
     const expectedResult = new RegExp("^c..k$", "g");
     expect(generateRegExp(lettersInTargetWord)).toEqual(expectedResult);
   });
 
-  it("should take a string with format letter-asterix-letter, and return a new RegExp in correct format", () => {
+  it("should take a string with format letter-asterisk-letter, and return a new RegExp in correct format", () => {
     const lettersInTargetWord = "*a*";
     const expectedResult = new RegExp("^.a.$", "g");
     expect(generateRegExp(lettersInTargetWord)).toEqual(expectedResult);
+  });
+});
+
+describe("filterByLettersInHand", () => {
+  it("should take a list of filteredWords, lettersInHand, lettersInTargetWord, and then return only the words that can be created using the lettersInHand and lettersInTargetWord", () => {
+    const lettersInHand = "aener";
+    const lettersInTargetWord = "b&";
+    const filteredWords = [
+      "barrel",
+      "bay",
+      "bee",
+      "bean",
+      "been",
+      "bear",
+      "beneficial"
+    ];
+    const expectedResult = ["bee", "been", "bean", "bear"];
+    expect(
+      filterByLettersInHand({
+        lettersInHand,
+        lettersInTargetWord,
+        filteredWords
+      }).sort()
+    ).toEqual(expectedResult.sort());
+  });
+
+  it("should only return words that are at most as long as the combined letters in lettersInHand and lettersInTargetWord", () => {
+    const lettersInHand = "ei";
+    const lettersInTargetWord = "h*";
+    const filteredWords = ["ha", "he", "hi"];
+    const expectedResult = ["he", "hi"];
+
+    expect(
+      filterByLettersInHand({
+        lettersInHand,
+        lettersInTargetWord,
+        filteredWords
+      }).sort()
+    ).toEqual(expectedResult.sort());
+  });
+
+  it("should only return words that are at most as long as the combined letters in lettersInHand and lettersInTargetWord", () => {
+    const lettersInHand = "umt";
+    const lettersInTargetWord = "h&";
+    const filteredWords = ["hum", "humming"];
+    const expectedResult = ["hum"];
+    expect(
+      filterByLettersInHand({
+        lettersInHand,
+        lettersInTargetWord,
+        filteredWords
+      }).sort()
+    ).toEqual(expectedResult.sort());
+  });
+
+  it("should accept a * in lettersInHand and allow any letter for that space", () => {
+    const lettersInHand = "enxefici*l";
+    const lettersInTargetWord = "b&";
+    const filteredWords = ["beneficial", "bee", "bears"];
+    const expectedResult = ["bee", "beneficial"];
+    expect(
+      filterByLettersInHand({
+        lettersInHand,
+        lettersInTargetWord,
+        filteredWords
+      }).sort()
+    ).toEqual(expectedResult.sort());
+  });
+
+  it("should accept multiple * characters in lettersInHand and allow any letter for those spaces", () => {
+    const lettersInHand = "as*ti*m";
+    const lettersInTargetWord = "b*n*a*";
+    const filteredWords = ["bantam", "bengal", "bonsai"];
+    const expectedResult = ["bantam", "bonsai"];
+    expect(
+      filterByLettersInHand({
+        lettersInHand,
+        lettersInTargetWord,
+        filteredWords
+      }).sort()
+    ).toEqual(expectedResult.sort());
   });
 });

@@ -1,10 +1,22 @@
 interface Props {
+  lettersInHand?: string;
   lettersInTargetWord: string;
   words: string[];
 }
 
+interface filterByLettersInTargetWordProps {
+  words: string[];
+  lettersInTargetWord: string;
+}
+
 interface LettersAlreadyReviewed {
   [key: string]: boolean;
+}
+
+interface filterByLettersInHandProps {
+  filteredWords: string[];
+  lettersInHand: string;
+  lettersInTargetWord: string;
 }
 
 type LetterPositions = {
@@ -12,7 +24,7 @@ type LetterPositions = {
 };
 
 export default function scrabbleAssist(props: Props) {
-  let { words, lettersInTargetWord } = props;
+  let { words, lettersInHand, lettersInTargetWord } = props;
   /**
    * 1. Return nothing if no input given for letters in target word
    */
@@ -20,15 +32,22 @@ export default function scrabbleAssist(props: Props) {
     return [];
   }
   /**
-   * 2. Break down letter groups in target word
+   * 2. Filter words list based on a RegExp
    */
-  return words.filter(word => {
-    let pattern = generateRegExp(lettersInTargetWord.toLowerCase());
-    return pattern.test(word);
+  let filteredWords = filterByLettersInTargetWord({
+    words,
+    lettersInTargetWord
   });
-  /**
-   * 3. Filter for words that have at least the provided letters
-   */
+
+  if (!lettersInHand) {
+    return filteredWords;
+  }
+
+  return filterByLettersInHand({
+    filteredWords,
+    lettersInHand,
+    lettersInTargetWord
+  });
 }
 
 export function generateRegExp(lettersInTargetWord: string): RegExp {
@@ -41,32 +60,32 @@ export function generateRegExp(lettersInTargetWord: string): RegExp {
     pattern = pattern + "$";
   }
 
-  if (hasAsterix(pattern) && beginsWithALetter(pattern)) {
+  if (hasAsterisk(pattern) && beginsWithALetter(pattern)) {
     pattern = "^" + pattern;
   }
 
-  if (hasAsterix(pattern) && endsWithALetter(pattern)) {
+  if (hasAsterisk(pattern) && endsWithALetter(pattern)) {
     pattern = pattern + "$";
   }
 
-  if (beginsWithAsterix(pattern)) {
+  if (beginsWithAsterisk(pattern)) {
     pattern = "^" + pattern;
   }
 
-  if (endsWithAsterix(pattern)) {
+  if (endsWithAsterisk(pattern)) {
     pattern = pattern + "$";
   }
 
-  pattern = pattern.replace(/\*/g, ".");
-  pattern = pattern.replace(/&/g, ".*");
+  pattern = replaceAsteriskAndAmpersand(pattern);
   return new RegExp(pattern, "g");
 }
 
+// Tools
 function hasAmpersand(pattern: string): boolean {
   return pattern.includes("&");
 }
 
-function hasAsterix(pattern: string): boolean {
+function hasAsterisk(pattern: string): boolean {
   return pattern.includes("*");
 }
 
@@ -78,10 +97,75 @@ function endsWithALetter(pattern: string): boolean {
   return !["*", "&"].includes(pattern.charAt(pattern.length - 1));
 }
 
-function beginsWithAsterix(pattern: string): boolean {
+function beginsWithAsterisk(pattern: string): boolean {
   return pattern.charAt(0) === "*";
 }
 
-function endsWithAsterix(pattern: string): boolean {
+function endsWithAsterisk(pattern: string): boolean {
   return pattern.charAt(pattern.length - 1) === "*";
+}
+
+function replaceAsteriskAndAmpersand(pattern: string): string {
+  return pattern.replace(/\*/g, ".").replace(/&/g, ".*");
+}
+
+function filterByLettersInTargetWord(
+  props: filterByLettersInTargetWordProps
+): string[] {
+  let { words, lettersInTargetWord } = props;
+  return words.filter(word => {
+    let pattern = generateRegExp(lettersInTargetWord.toLowerCase());
+    return pattern.test(word);
+  });
+}
+
+function eliminateAsterisksAndAmpersands(letters: string): string {
+  return letters.replace(/\*|&/g, "");
+}
+
+function moveAsterisksToTheEnd(letters: string): string {
+  const numberOfAsterisks = (letters.match(/\*/g) || []).length;
+  return letters.replace(/\*/g, "") + "*".repeat(numberOfAsterisks);
+}
+
+// TODO: NEEDS WORK
+export function filterByLettersInHand(
+  props: filterByLettersInHandProps
+): string[] {
+  let { filteredWords, lettersInHand, lettersInTargetWord } = props;
+  const letters =
+    eliminateAsterisksAndAmpersands(lettersInTargetWord) +
+    moveAsterisksToTheEnd(lettersInHand);
+  return filteredWords.filter(word => {
+    let lettersLeftInWord = word;
+    /**
+     * Check that you have at least as many letters as are needed for the word
+     */
+    if (letters.length < word.length) {
+      return false;
+    }
+
+    /**
+     * Iterate through your available letters, removing each letter from the word
+     * you're trying to build.
+     * If the word's length runs down to zero, you know that your letters can build the word.
+     */
+    for (let i = 0; i < letters.split("").length; i++) {
+      lettersLeftInWord = lettersLeftInWord.replace(letters[i], "");
+
+      /**
+       * If you've gone through all the letters in 'letters' and are down to the stars,
+       * then remove the first letter from lettersLeftInWord if you have a star
+       */
+      if (letters[i] === "*") {
+        lettersLeftInWord = lettersLeftInWord.substring(1);
+      }
+
+      if (!lettersLeftInWord) {
+        return true;
+      }
+    }
+
+    return false;
+  });
 }

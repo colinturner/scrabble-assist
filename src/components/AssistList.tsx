@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import scrabbleAssist from "../tools/scrabbleAssist";
 import ENGLISH_WORDS from "../constants/englishWords";
 import GERMAN_WORDS from "../constants/germanWords";
@@ -74,14 +74,14 @@ const AssistList = () => {
           <Label>Letters in hand (optional):</Label>
           <Input
             placeholder="xyz"
-            onChange={e => setLettersInHand(e.target.value)}
+            onChange={e => setLettersInHand(e.target.value.toLowerCase())}
           />
         </InputGroup>
         <InputGroup>
           <Label>Desired word format:</Label>
           <Input
             placeholder="sc**h&"
-            onChange={e => setLettersInTargetWord(e.target.value)}
+            onChange={e => setLettersInTargetWord(e.target.value.toLowerCase())}
           />
         </InputGroup>
       </Header>

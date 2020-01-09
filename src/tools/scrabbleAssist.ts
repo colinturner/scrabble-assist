@@ -9,19 +9,11 @@ interface filterByLettersInTargetWordProps {
   lettersInTargetWord: string;
 }
 
-interface LettersAlreadyReviewed {
-  [key: string]: boolean;
-}
-
 interface filterByLettersInHandProps {
   filteredWords: string[];
   lettersInHand: string;
   lettersInTargetWord: string;
 }
-
-type LetterPositions = {
-  [key in number | string]: string;
-};
 
 export default function scrabbleAssist(props: Props) {
   let { words, lettersInHand, lettersInTargetWord } = props;
@@ -128,7 +120,6 @@ function moveAsterisksToTheEnd(letters: string): string {
   return letters.replace(/\*/g, "") + "*".repeat(numberOfAsterisks);
 }
 
-// TODO: NEEDS WORK
 export function filterByLettersInHand(
   props: filterByLettersInHandProps
 ): string[] {

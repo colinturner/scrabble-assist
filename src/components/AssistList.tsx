@@ -43,20 +43,21 @@ const List = styled.div`
   line-height: 30px;
 `;
 
-const AssistList = () => {
+function AssistList() {
   const [lettersInHand, setLettersInHand] = useState("");
   const [lettersInTargetWord, setLettersInTargetWord] = useState("");
   const [words, setWords] = useState(ENGLISH_WORDS);
 
-  const setLanguage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (["german", "deutsch"].includes(e.target.value.toLowerCase())) {
-      setWords(GERMAN_WORDS);
-      return;
-    }
-    if (words !== ENGLISH_WORDS) {
-      setWords(ENGLISH_WORDS);
-    }
-  };
+  function setLanguage(e: React.ChangeEvent<HTMLSelectElement>): void {
+    const languages = {
+      english: ENGLISH_WORDS,
+      german: GERMAN_WORDS
+    };
+    type WORD_SET = keyof typeof languages;
+    const words1 = e.target.value as WORD_SET;
+
+    setWords(languages[words1]);
+  }
 
   return (
     <Container>
@@ -64,11 +65,10 @@ const AssistList = () => {
       <Header>
         <InputGroup>
           <Label>Language:</Label>
-          <Input
-            type="text"
-            placeholder="English or German"
-            onChange={e => setLanguage(e)}
-          />
+          <select onChange={e => setLanguage(e)}>
+            <option value="english">English</option>
+            <option value="german">German</option>
+          </select>
         </InputGroup>
         <InputGroup>
           <Label>Letters in hand (optional):</Label>
@@ -94,6 +94,6 @@ const AssistList = () => {
       </List>
     </Container>
   );
-};
+}
 
 export default AssistList;

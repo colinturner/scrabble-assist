@@ -54,9 +54,9 @@ function AssistList() {
       german: GERMAN_WORDS
     };
     type WORD_SET = keyof typeof languages;
-    const words1 = e.target.value as WORD_SET;
+    const words = e.target.value as WORD_SET;
 
-    setWords(languages[words1]);
+    setWords(languages[words]);
   }
 
   return (

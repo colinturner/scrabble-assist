@@ -58,11 +58,12 @@ const hand_letter_content = (
     </div>
     <br />
     <div>
-      If you leave this field blank, we'll pretend you just have infinite blank
+      If you leave this field blank, we'll just pretend you have infinite blank
       tiles in your hand.
     </div>
   </>
 );
+
 const board_letter_title = "Instructions";
 const board_letter_content = (
   <BoardLetterContent>
@@ -96,6 +97,11 @@ const board_letter_content = (
   </BoardLetterContent>
 );
 
+const language_title = "Instructions";
+const language_content = (
+  <div>Select the language you're playing Scrabble in.</div>
+);
+
 export default function AssistList() {
   const [lettersInHand, setLettersInHand] = useState("");
   const [lettersInTargetWord, setLettersInTargetWord] = useState("");
@@ -125,6 +131,13 @@ export default function AssistList() {
             <Option value="english">English</Option>
             <Option value="german">German</Option>
           </Select>
+          <Popover
+            title={language_title}
+            content={language_content}
+            placement="right"
+          >
+            <QuestionMark src={Question} />
+          </Popover>
         </InputGroup>
         <InputGroup>
           <Input

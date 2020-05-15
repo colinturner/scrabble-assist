@@ -49,6 +49,19 @@ const BoardLetterContent = styled.div`
   max-width: 400px;
 `;
 
+const illuminating_emerald = "#00916e";
+const madder_lake = "#cc2936";
+
+const AsteriskStyles = styled.span`
+  color: ${madder_lake};
+  font-weight: bold;
+`;
+
+const AmpersandStyles = styled.span`
+  color: ${illuminating_emerald};
+  font-weight: bold;
+`;
+
 const hand_letter_title = "Instructions";
 const hand_letter_content = (
   <>
@@ -77,15 +90,30 @@ const board_letter_content = (
     <br />
     <Example>Example</Example>
     <div>
-      Entering <Text code>l*g&</Text> could yield the following words depending
-      on the letters in your hand:
+      Entering{" "}
+      <Text code>
+        l<AsteriskStyles>*</AsteriskStyles>g<AmpersandStyles>&</AmpersandStyles>
+      </Text>{" "}
+      could yield the following playable words depending on the letters in your
+      hand:
     </div>
     <ul>
-      <li>leg</li>
-      <li>legs</li>
-      <li>lug</li>
-      <li>lugs</li>
-      <li>luggage</li>
+      <li>
+        l<AsteriskStyles>e</AsteriskStyles>g
+      </li>
+      <li>
+        l<AsteriskStyles>u</AsteriskStyles>g
+      </li>
+      <li>
+        l<AsteriskStyles>e</AsteriskStyles>g<AmpersandStyles>s</AmpersandStyles>
+      </li>
+      <li>
+        l<AsteriskStyles>u</AsteriskStyles>g<AmpersandStyles>s</AmpersandStyles>
+      </li>
+      <li>
+        l<AsteriskStyles>u</AsteriskStyles>g
+        <AmpersandStyles>gage</AmpersandStyles>
+      </li>
     </ul>
     <div>
       We indicated that we are looking for a word that starts with an{" "}

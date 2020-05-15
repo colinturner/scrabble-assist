@@ -1,5 +1,4 @@
-const ENGLISH_WORDS =
-[
+const ENGLISH_WORDS = [
   "aardvark",
   "aardwolf",
   "aaron",
@@ -58109,23 +58108,7 @@ const ENGLISH_WORDS =
   "zooplankton",
   "zoos",
   "zulu",
-  "zulus",
-]
+  "zulus"
+];
 
 export default ENGLISH_WORDS;
-
-// const longestWord = ENGLISH_WORDS.sort((a, b) => a.length - b.length).pop();
-// console.log('longest word: ', longestWord, 'length: ', (longestWord || []).length);
-
-// let sum = 0;
-// const wordsWith = letter => {
-//   const numberOfWordsContainingLetter = ENGLISH_WORDS.filter(word => word.includes(letter)).length;
-//   sum += numberOfWordsContainingLetter;
-//   const numberOfWordsInEnglishLanguage = ENGLISH_WORDS.length;
-//   const percentageOfWordsContainingLetter = (numberOfWordsContainingLetter / numberOfWordsInEnglishLanguage * 100).toFixed(2);
-//   console.log(`${letter}: `, numberOfWordsContainingLetter, `(${percentageOfWordsContainingLetter}%)`)
-// }
-
-// "abcdefghijklmnopqrstuvwxyz".split("").forEach(letter => wordsWith(letter));
-// console.log(`${ENGLISH_WORDS.length} words in English language`);
-// console.log(`${sum} words in expanded dictionary`);

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import Instructions from "./Instructions";
 import scrabbleAssist from "../tools/scrabbleAssist";
 import ENGLISH_WORDS from "../constants/englishWords";
 import GERMAN_WORDS from "../constants/germanWords";
 import styled from "styled-components";
+import { Select } from "antd";
+
+const { Option } = Select;
 
 const Container = styled.div`
   padding: 20px;
@@ -48,40 +52,47 @@ function AssistList() {
   const [lettersInTargetWord, setLettersInTargetWord] = useState("");
   const [words, setWords] = useState(ENGLISH_WORDS);
 
-  function setLanguage(e: React.ChangeEvent<HTMLSelectElement>): void {
+  function setLanguage(value: string): void {
     const languages = {
       english: ENGLISH_WORDS,
-      german: GERMAN_WORDS
+      german: GERMAN_WORDS,
     };
     type WORD_SET = keyof typeof languages;
-    const words = e.target.value as WORD_SET;
+    const words = value as WORD_SET;
 
     setWords(languages[words]);
   }
 
   return (
     <Container>
+      <Instructions />
       <Title>Scrabble Assist</Title>
       <Header>
         <InputGroup>
           <Label>Language:</Label>
-          <select onChange={e => setLanguage(e)}>
-            <option value="english">English</option>
-            <option value="german">German</option>
-          </select>
+          <Select
+            defaultValue="english"
+            style={{ width: 120 }}
+            onChange={(e) => setLanguage(e)}
+          >
+            <Option value="english">English</Option>
+            <Option value="german">German</Option>
+          </Select>
         </InputGroup>
         <InputGroup>
           <Label>Letters in hand (optional):</Label>
           <Input
             placeholder="xyz"
-            onChange={e => setLettersInHand(e.target.value.toLowerCase())}
+            onChange={(e) => setLettersInHand(e.target.value.toLowerCase())}
           />
         </InputGroup>
         <InputGroup>
           <Label>Desired word format:</Label>
           <Input
             placeholder="sc**h&"
-            onChange={e => setLettersInTargetWord(e.target.value.toLowerCase())}
+            onChange={(e) =>
+              setLettersInTargetWord(e.target.value.toLowerCase())
+            }
           />
         </InputGroup>
       </Header>
@@ -89,7 +100,7 @@ function AssistList() {
         {scrabbleAssist({
           lettersInHand,
           lettersInTargetWord,
-          words
+          words,
         }).join("\r\n")}
       </List>
     </Container>

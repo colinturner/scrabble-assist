@@ -3,11 +3,7 @@ import "./App.css";
 import AssistList from "./components/AssistList";
 
 const App: React.FC = () => {
-  return (
-    <>
-      <AssistList></AssistList>
-    </>
-  );
+  return <AssistList />;
 };
 
 export default App;

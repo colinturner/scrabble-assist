@@ -31,13 +31,6 @@ const InputGroup = styled.div`
   }
 `;
 
-const Label = styled.div`
-  background: aliceblue;
-  padding: 10px;
-  margin-right: 10px;
-  border-radius: 3px;
-`;
-
 const List = styled.div`
   white-space: pre-line;
   line-height: 30px;
@@ -52,64 +45,62 @@ const Example = styled.div`
   font-weight: bold;
 `;
 
-const Explanation = styled.div`
-  max-width: 50px;
-`;
-
 const BoardLetterContent = styled.div`
   max-width: 400px;
 `;
+
+const hand_letter_title = "Instructions";
+const hand_letter_content = (
+  <>
+    <div>
+      Write down the letters you have in your hand. Substitute{" "}
+      <Text code>*</Text> when you have a blank tile.
+    </div>
+    <br />
+    <div>
+      If you leave this field blank, we'll pretend you just have infinite blank
+      tiles in your hand.
+    </div>
+  </>
+);
+const board_letter_title = "Instructions";
+const board_letter_content = (
+  <BoardLetterContent>
+    <div>Write down the known letters of the word you want to complete.</div>
+    <div>
+      Substitute <Text code>*</Text> for 1 missing letter.
+    </div>
+    <div>
+      Substitute <Text code>&</Text> for 0 or more missing letters.
+    </div>
+    <br />
+    <Example>Example</Example>
+    <div>
+      Entering <Text code>l*g&</Text> could yield the following words depending
+      on the letters in your hand:
+    </div>
+    <ul>
+      <li>leg</li>
+      <li>legs</li>
+      <li>lug</li>
+      <li>lugs</li>
+      <li>luggage</li>
+    </ul>
+    <div>
+      We indicated that we are looking for a word that starts with an{" "}
+      <Text code>l</Text>, then has a single empty letter spot (
+      <Text code>*</Text>
+      ), followed by a <Text code>g</Text>, and then either stops there or
+      continues with more letters (<Text code>&</Text>).
+    </div>
+  </BoardLetterContent>
+);
 
 export default function AssistList() {
   const [lettersInHand, setLettersInHand] = useState("");
   const [lettersInTargetWord, setLettersInTargetWord] = useState("");
   const [words, setWords] = useState(ENGLISH_WORDS);
-  const hand_letter_title = "Instructions";
-  const hand_letter_content = (
-    <>
-      <div>
-        Write down the letters you have in your hand. Substitute{" "}
-        <Text code>*</Text> when you have a blank tile.
-      </div>
-      <br />
-      <div>
-        If you leave this field blank, we'll pretend you just have infinite
-        blank tiles in your hand.
-      </div>
-    </>
-  );
-  const board_letter_title = "Instructions";
-  const board_letter_content = (
-    <BoardLetterContent>
-      <div>Write down the known letters of the word you want to complete.</div>
-      <div>
-        Substitute <Text code>*</Text> for 1 missing letter.
-      </div>
-      <div>
-        Substitute <Text code>&</Text> for 0 or more missing letters.
-      </div>
-      <br />
-      <Example>Example</Example>
-      <div>
-        Entering <Text code>l*g&</Text> could yield the following words
-        depending on the letters in your hand:
-      </div>
-      <ul>
-        <li>leg</li>
-        <li>legs</li>
-        <li>lug</li>
-        <li>lugs</li>
-        <li>luggage</li>
-      </ul>
-      <div>
-        We indicated that we are looking for a word that starts with an{" "}
-        <Text code>l</Text>, then has a single empty letter spot (
-        <Text code>*</Text>
-        ), followed by a <Text code>g</Text>, and then either stops there or
-        continues with more letters (<Text code>&</Text>).
-      </div>
-    </BoardLetterContent>
-  );
+
   function setLanguage(value: string): void {
     const languages = {
       english: ENGLISH_WORDS,

@@ -15,6 +15,9 @@ const Container = styled.div`
   background-color: red;
   display: flex;
   flex-direction: column;
+  max-width: 400px;
+  padding: 20px;
+  height: 100vh;
 `;
 
 const Title = styled.div`
@@ -24,7 +27,7 @@ const Title = styled.div`
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px 0px;
+  padding-bottom: 20px;
 `;
 
 const InputGroup = styled.div`
@@ -150,7 +153,7 @@ export default function AssistList() {
   }
 
   const Row = ({ index, style }: { index: number; style: any }) => (
-    <div style={style}>Row {wordList[index]}</div>
+    <div style={style}>{wordList[index]}</div>
   );
 
   return (

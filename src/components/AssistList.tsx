@@ -12,7 +12,6 @@ const { Option } = Select;
 const { Text } = Typography;
 
 const Container = styled.div`
-  background-color: red;
   display: flex;
   flex-direction: column;
   max-width: 400px;

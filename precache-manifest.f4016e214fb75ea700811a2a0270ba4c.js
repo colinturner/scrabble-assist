@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "761b90d7651a6dd9b730411302807e56",
+    "revision": "ed05b6a0ff16d6022d58fc97a8ef42e9",
     "url": "/scrabble-assist/index.html"
   },
   {
-    "revision": "d7e776384a7c1db4b5e2",
+    "revision": "a95738b3fed48651185f",
     "url": "/scrabble-assist/static/css/2.35fcc229.chunk.css"
   },
   {
-    "revision": "6d0312d63d610792c284",
+    "revision": "1156b280d770468e501c",
     "url": "/scrabble-assist/static/css/main.266173d9.chunk.css"
   },
   {
-    "revision": "d7e776384a7c1db4b5e2",
-    "url": "/scrabble-assist/static/js/2.cf795e59.chunk.js"
+    "revision": "a95738b3fed48651185f",
+    "url": "/scrabble-assist/static/js/2.d9a158d5.chunk.js"
   },
   {
     "revision": "b651d5533fc80509587379dd07cc06bd",
-    "url": "/scrabble-assist/static/js/2.cf795e59.chunk.js.LICENSE"
+    "url": "/scrabble-assist/static/js/2.d9a158d5.chunk.js.LICENSE"
   },
   {
-    "revision": "6d0312d63d610792c284",
-    "url": "/scrabble-assist/static/js/main.1e7512c8.chunk.js"
+    "revision": "1156b280d770468e501c",
+    "url": "/scrabble-assist/static/js/main.82b3d34d.chunk.js"
   },
   {
     "revision": "fd71ae0fd259decc6df1",

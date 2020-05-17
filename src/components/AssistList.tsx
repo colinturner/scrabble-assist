@@ -5,13 +5,16 @@ import GERMAN_WORDS from "../constants/germanWords";
 import styled from "styled-components";
 import { Select, Input, Popover, Typography } from "antd";
 import Question from "../assets/question-mark.svg";
+import { FixedSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 
 const { Option } = Select;
 const { Text } = Typography;
 
 const Container = styled.div`
-  padding: 20px;
-  width: fit-content;
+  background-color: red;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.div`
@@ -29,11 +32,6 @@ const InputGroup = styled.div`
   :not(:last-child) {
     padding-bottom: 20px;
   }
-`;
-
-const List = styled.div`
-  white-space: pre-line;
-  line-height: 30px;
 `;
 
 const QuestionMark = styled.img`
@@ -134,6 +132,11 @@ export default function AssistList() {
   const [lettersInHand, setLettersInHand] = useState("");
   const [lettersInTargetWord, setLettersInTargetWord] = useState("");
   const [words, setWords] = useState(ENGLISH_WORDS);
+  const wordList = scrabbleAssist({
+    lettersInHand,
+    lettersInTargetWord,
+    words,
+  });
 
   function setLanguage(value: string): void {
     const languages = {
@@ -146,10 +149,14 @@ export default function AssistList() {
     setWords(languages[words]);
   }
 
+  const Row = ({ index, style }: { index: number; style: any }) => (
+    <div style={style}>Row {wordList[index]}</div>
+  );
+
   return (
     <Container>
-      <Title>Scrabble Assist</Title>
       <Header>
+        <Title>Scrabble Assist</Title>
         <InputGroup>
           <Select
             defaultValue="english"
@@ -198,13 +205,20 @@ export default function AssistList() {
           </Popover>
         </InputGroup>
       </Header>
-      <List>
-        {scrabbleAssist({
-          lettersInHand,
-          lettersInTargetWord,
-          words,
-        }).join("\r\n")}
-      </List>
+      <div style={{ flex: "1 1 auto", height: "100vh" }}>
+        <AutoSizer>
+          {({ height, width }) => (
+            <List
+              height={height}
+              itemCount={wordList.length}
+              itemSize={35}
+              width={width}
+            >
+              {Row}
+            </List>
+          )}
+        </AutoSizer>
+      </div>
     </Container>
   );
 }

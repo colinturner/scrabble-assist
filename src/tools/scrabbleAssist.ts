@@ -15,7 +15,7 @@ interface filterByLettersInHandProps {
   lettersInTargetWord: string;
 }
 
-export default function scrabbleAssist(props: Props) {
+export default function scrabbleAssist(props: Props): string[] {
   let { words, lettersInHand, lettersInTargetWord } = props;
   /**
    * 1. Return nothing if no input given for letters in target word
@@ -28,7 +28,7 @@ export default function scrabbleAssist(props: Props) {
    */
   let filteredWords = filterByLettersInTargetWord({
     words,
-    lettersInTargetWord
+    lettersInTargetWord,
   });
 
   if (!lettersInHand) {
@@ -38,7 +38,7 @@ export default function scrabbleAssist(props: Props) {
   return filterByLettersInHand({
     filteredWords,
     lettersInHand,
-    lettersInTargetWord
+    lettersInTargetWord,
   });
 }
 
@@ -105,7 +105,7 @@ function filterByLettersInTargetWord(
   props: filterByLettersInTargetWordProps
 ): string[] {
   let { words, lettersInTargetWord } = props;
-  return words.filter(word => {
+  return words.filter((word) => {
     let pattern = generateRegExp(lettersInTargetWord.toLowerCase());
     return pattern.test(word);
   });
@@ -127,7 +127,7 @@ export function filterByLettersInHand(
   const letters =
     eliminateAsterisksAndAmpersands(lettersInTargetWord) +
     moveAsterisksToTheEnd(lettersInHand);
-  return filteredWords.filter(word => {
+  return filteredWords.filter((word) => {
     let lettersLeftInWord = word;
     /**
      * Check that you have at least as many letters as are needed for the word

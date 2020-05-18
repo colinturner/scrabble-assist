@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, ReactElement } from "react";
 import scrabbleAssist from "../tools/scrabbleAssist";
 import ENGLISH_WORDS from "../constants/englishWords";
 import GERMAN_WORDS from "../constants/germanWords";
@@ -151,76 +151,110 @@ export default function AssistList() {
     setWords(languages[words]);
   }
 
+  return (
+    <Container>
+      <Header>
+        <Title>Scrabble Assist</Title>
+        <ChooseLanguage setLanguage={setLanguage} />
+        <SetHandLetters setLettersInHand={setLettersInHand} />
+        <SetTargetWordLetters setLettersInTargetWord={setLettersInTargetWord} />
+      </Header>
+      <WordMatches wordList={wordList} />
+    </Container>
+  );
+}
+
+function ChooseLanguage({
+  setLanguage,
+}: {
+  setLanguage: Function;
+}): ReactElement {
+  return (
+    <InputGroup>
+      <Select
+        defaultValue="english"
+        style={{ width: 120 }}
+        onChange={(e) => setLanguage(e)}
+      >
+        <Option value="english">English</Option>
+        <Option value="german">German</Option>
+      </Select>
+      <Popover
+        title={language_title}
+        content={language_content}
+        placement="right"
+      >
+        <QuestionMark src={Question} />
+      </Popover>
+    </InputGroup>
+  );
+}
+
+function SetHandLetters({
+  setLettersInHand,
+}: {
+  setLettersInHand: Function;
+}): ReactElement {
+  return (
+    <InputGroup>
+      <Input
+        placeholder="xy*z"
+        addonBefore="Letters in hand"
+        onChange={(e) => setLettersInHand(e.target.value.toLowerCase())}
+      />
+      <Popover
+        title={hand_letter_title}
+        content={hand_letter_content}
+        placement="right"
+      >
+        <QuestionMark src={Question} />
+      </Popover>
+    </InputGroup>
+  );
+}
+
+function SetTargetWordLetters({
+  setLettersInTargetWord,
+}: {
+  setLettersInTargetWord: Function;
+}): ReactElement {
+  return (
+    <InputGroup>
+      <Input
+        placeholder="l*g&"
+        addonBefore="Letters on board"
+        onChange={(e) => setLettersInTargetWord(e.target.value.toLowerCase())}
+      />
+      <Popover
+        title={board_letter_title}
+        content={board_letter_content}
+        placement="right"
+      >
+        <QuestionMark src={Question} />
+      </Popover>
+    </InputGroup>
+  );
+}
+
+function WordMatches({ wordList }: { wordList: string[] }): ReactElement {
   const Row = ({ index, style }: { index: number; style: any }) => (
     <div style={style}>{wordList[index]}</div>
   );
 
   return (
-    <Container>
-      <Header>
-        <Title>Scrabble Assist</Title>
-        <InputGroup>
-          <Select
-            defaultValue="english"
-            style={{ width: 120 }}
-            onChange={(e) => setLanguage(e)}
+    <div style={{ flex: "1 1 auto", height: "100vh" }}>
+      <AutoSizer>
+        {({ height, width }) => (
+          <List
+            height={height}
+            itemCount={wordList.length}
+            itemSize={35}
+            width={width}
           >
-            <Option value="english">English</Option>
-            <Option value="german">German</Option>
-          </Select>
-          <Popover
-            title={language_title}
-            content={language_content}
-            placement="right"
-          >
-            <QuestionMark src={Question} />
-          </Popover>
-        </InputGroup>
-        <InputGroup>
-          <Input
-            placeholder="xy*z"
-            addonBefore="Letters in hand"
-            onChange={(e) => setLettersInHand(e.target.value.toLowerCase())}
-          />
-          <Popover
-            title={hand_letter_title}
-            content={hand_letter_content}
-            placement="right"
-          >
-            <QuestionMark src={Question} />
-          </Popover>
-        </InputGroup>
-        <InputGroup>
-          <Input
-            placeholder="l*g&"
-            addonBefore="Letters on board"
-            onChange={(e) =>
-              setLettersInTargetWord(e.target.value.toLowerCase())
-            }
-          />
-          <Popover
-            title={board_letter_title}
-            content={board_letter_content}
-            placement="right"
-          >
-            <QuestionMark src={Question} />
-          </Popover>
-        </InputGroup>
-      </Header>
-      <div style={{ flex: "1 1 auto", height: "100vh" }}>
-        <AutoSizer>
-          {({ height, width }) => (
-            <List
-              height={height}
-              itemCount={wordList.length}
-              itemSize={35}
-              width={width}
-            >
-              {Row}
-            </List>
-          )}
-        </AutoSizer>
-      </div>
-    </Container>
+            {Row}
+          </List>
+        )}
+      </AutoSizer>
+    </div>
   );
 }

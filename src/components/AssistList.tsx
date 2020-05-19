@@ -78,17 +78,10 @@ const hand_letter_content = (
 );
 
 const board_letter_title = "Instructions";
-const board_letter_content = (
-  <BoardLetterContent>
-    <div>Write down the known letters of the word you want to complete.</div>
-    <div>
-      Substitute <Text code>*</Text> for 1 missing letter.
-    </div>
-    <div>
-      Substitute <Text code>&</Text> for 0 or more missing letters.
-    </div>
-    <br />
-    <Example>Example</Example>
+
+const Example1 = (): ReactElement => (
+  <>
+    <Example>Example 1</Example>
     <div>
       Entering{" "}
       <Text code>
@@ -122,6 +115,132 @@ const board_letter_content = (
       ), followed by a <Text code>g</Text>, and then either stops there or
       continues with more letters (<Text code>&</Text>).
     </div>
+  </>
+);
+
+const Example2 = (): ReactElement => (
+  <>
+    <Example>Example 2</Example>
+    <div>
+      Entering{" "}
+      <Text code>
+        vo<AsteriskStyles>*</AsteriskStyles>
+        <AsteriskStyles>*</AsteriskStyles>
+      </Text>{" "}
+      can only yield 4-letter words that start with "vo":
+    </div>
+    <ul>
+      <li>
+        vo<AsteriskStyles>i</AsteriskStyles>
+        <AsteriskStyles>d</AsteriskStyles>
+      </li>
+      <li>
+        vo<AsteriskStyles>l</AsteriskStyles>
+        <AsteriskStyles>e</AsteriskStyles>
+      </li>
+      <li>
+        vo<AsteriskStyles>l</AsteriskStyles>
+        <AsteriskStyles>t</AsteriskStyles>
+      </li>
+      <li>
+        vo<AsteriskStyles>t</AsteriskStyles>
+        <AsteriskStyles>e</AsteriskStyles>
+      </li>
+      <li>
+        vo<AsteriskStyles>w</AsteriskStyles>
+        <AsteriskStyles>s</AsteriskStyles>
+      </li>
+    </ul>
+    <div>
+      whereas entering{" "}
+      <Text code>
+        vo<AmpersandStyles>&</AmpersandStyles>
+      </Text>{" "}
+      could yield words of any length, so long as they begin with the letters
+      "vo":
+    </div>
+    <ul>
+      <li>
+        vo<AmpersandStyles>c</AmpersandStyles>
+        <AmpersandStyles>a</AmpersandStyles>
+        <AmpersandStyles>b</AmpersandStyles>
+        <AmpersandStyles>u</AmpersandStyles>
+        <AmpersandStyles>l</AmpersandStyles>
+        <AmpersandStyles>a</AmpersandStyles>
+        <AmpersandStyles>r</AmpersandStyles>
+        <AmpersandStyles>y</AmpersandStyles>
+      </li>
+      <li>
+        vo<AmpersandStyles>c</AmpersandStyles>
+        <AmpersandStyles>a</AmpersandStyles>
+        <AmpersandStyles>t</AmpersandStyles>
+        <AmpersandStyles>i</AmpersandStyles>
+        <AmpersandStyles>o</AmpersandStyles>
+        <AmpersandStyles>n</AmpersandStyles>
+      </li>
+      <li>
+        vo<AmpersandStyles>l</AmpersandStyles>
+        <AmpersandStyles>t</AmpersandStyles>
+      </li>
+      <li>etc...</li>
+    </ul>
+  </>
+);
+
+const Example3 = (): ReactElement => {
+  return (
+    <>
+      <Example>Example 3</Example>
+      <div>
+        Entering{" "}
+        <Text code>
+          <AmpersandStyles>&</AmpersandStyles>
+          gil
+          <AsteriskStyles>*</AsteriskStyles>
+        </Text>{" "}
+        can yield words of any length, so long as they end with "gil" plus one
+        extra letter after:
+      </div>
+      <ul>
+        <li>
+          <AmpersandStyles>a</AmpersandStyles>gil
+          <AsteriskStyles>e</AsteriskStyles>
+        </li>
+        <li>
+          <AmpersandStyles>fra</AmpersandStyles>gil
+          <AsteriskStyles>e</AsteriskStyles>
+        </li>
+        <li>
+          <AmpersandStyles>grog</AmpersandStyles>gil
+          <AsteriskStyles>y</AsteriskStyles>
+        </li>
+        <li>etc</li>
+      </ul>
+    </>
+  );
+};
+
+const board_letter_content = (
+  <BoardLetterContent>
+    <div>
+      Write down the known letters of the word you want to complete. There are
+      two special characters you can use:
+    </div>
+    <br />
+    <div>
+      Substitute <Text code>*</Text> for each missing letter.
+    </div>
+    <div>
+      Substitute <Text code>&</Text> for "0 or more" missing letters. This
+      character is especially useful for adding a prefix or a suffix on either
+      end of your target word.
+    </div>
+    <br />
+    <Example1 />
+    <br />
+    <Example2 />
+    <br />
+    <Example3 />
   </BoardLetterContent>
 );
 
@@ -222,7 +341,7 @@ function SetTargetWordLetters({
     <InputGroup>
       <Input
         placeholder="l*g&"
-        addonBefore="Letters on board"
+        addonBefore="Target word"
         onChange={(e) => setLettersInTargetWord(e.target.value.toLowerCase())}
       />
       <Popover

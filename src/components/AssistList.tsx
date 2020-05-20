@@ -48,6 +48,13 @@ const QuestionMark = styled.img`
   padding-left: 10px;
 `;
 
+const AutoSizerWrapper = styled.div`
+  flex: 1 1 auto;
+  height: 100vh;
+  background-color: #fafafa;
+  padding: 0px 10px;
+`;
+
 const BoardLetterContent = styled.div`
   max-width: 400px;
 `;
@@ -209,7 +216,7 @@ function WordMatches({ wordList }: { wordList: string[] }): ReactElement {
   );
 
   return (
-    <div style={{ flex: "1 1 auto", height: "100vh" }}>
+    <AutoSizerWrapper>
       <AutoSizer>
         {({ height, width }) => (
           <List
@@ -222,6 +229,6 @@ function WordMatches({ wordList }: { wordList: string[] }): ReactElement {
           </List>
         )}
       </AutoSizer>
-    </div>
+    </AutoSizerWrapper>
   );
 }

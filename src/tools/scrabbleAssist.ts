@@ -21,7 +21,7 @@ export default function scrabbleAssist(props: Props): string[] {
    * 1. Return nothing if no input given for letters in target word
    */
   if (!lettersInTargetWord) {
-    return [];
+    return words;
   }
   /**
    * 2. Filter words list based on a RegExp

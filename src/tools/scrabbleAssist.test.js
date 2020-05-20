@@ -1,6 +1,6 @@
 import scrabbleAssist, {
   generateRegExp,
-  filterByLettersInHand
+  filterByLettersInHand,
 } from "./scrabbleAssist";
 
 const words = [
@@ -32,14 +32,14 @@ const words = [
   "you",
   "youth",
   "yurt",
-  "zebra"
+  "zebra",
 ];
 
 describe("scrabbleAssist", () => {
   // No input
   it("should take an empty string as input and return no words", () => {
     const lettersInTargetWord = "";
-    const expectedResult = [];
+    const expectedResult = words;
     expect(scrabbleAssist({ lettersInTargetWord, words }).sort()).toEqual(
       expectedResult.sort()
     );
@@ -244,14 +244,14 @@ describe("filterByLettersInHand", () => {
       "bean",
       "been",
       "bear",
-      "beneficial"
+      "beneficial",
     ];
     const expectedResult = ["bee", "been", "bean", "bear"];
     expect(
       filterByLettersInHand({
         lettersInHand,
         lettersInTargetWord,
-        filteredWords
+        filteredWords,
       }).sort()
     ).toEqual(expectedResult.sort());
   });
@@ -266,7 +266,7 @@ describe("filterByLettersInHand", () => {
       filterByLettersInHand({
         lettersInHand,
         lettersInTargetWord,
-        filteredWords
+        filteredWords,
       }).sort()
     ).toEqual(expectedResult.sort());
   });
@@ -280,7 +280,7 @@ describe("filterByLettersInHand", () => {
       filterByLettersInHand({
         lettersInHand,
         lettersInTargetWord,
-        filteredWords
+        filteredWords,
       }).sort()
     ).toEqual(expectedResult.sort());
   });
@@ -294,7 +294,7 @@ describe("filterByLettersInHand", () => {
       filterByLettersInHand({
         lettersInHand,
         lettersInTargetWord,
-        filteredWords
+        filteredWords,
       }).sort()
     ).toEqual(expectedResult.sort());
   });
@@ -308,7 +308,7 @@ describe("filterByLettersInHand", () => {
       filterByLettersInHand({
         lettersInHand,
         lettersInTargetWord,
-        filteredWords
+        filteredWords,
       }).sort()
     ).toEqual(expectedResult.sort());
   });
